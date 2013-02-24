@@ -101,7 +101,10 @@ PYTHON_VERSION=$(cat runtime.txt)
 
 # Install Python.
 if [ -f .heroku/python-version ]; then
-  if [ ! $(cat .heroku/python-version) = $PYTHON_VERSION ]; then
+  if [ $CLEAN_INSTALL ]; then
+    puts-step "Forcing clean install."
+    rm -fr .heroku/python
+  elif [ ! $(cat .heroku/python-version) = $PYTHON_VERSION ]; then
     puts-step "Found $(cat .heroku/python-version), removing."
     rm -fr .heroku/python
   else
